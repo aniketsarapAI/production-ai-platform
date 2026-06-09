@@ -120,6 +120,16 @@ async def rate_limit_handler(request: Request, exc: RateLimitExceeded):
 # =============================================
 # ENDPOINTS
 # =============================================
+@app.get("/")
+async def root():
+    """Root endpoint for API discovery."""
+    return {
+        "project": "Production AI Platform",
+        "status": "running",
+        "version": "1.1.0",
+        "docs": "/docs",
+        "health": "/health",
+    }
 
 @app.post("/chat", response_model=ChatResponse)
 @limiter.limit(get_settings().rate_limit)
