@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     openai_api_key: str
     openai_base_url: str = "https://openrouter.ai/api/v1"
 
-    primary_model: str = "openai/gpt-4o"
+    primary_model: str = "openai/gpt-4o-mini"
     fallback_model: str = "openai/gpt-4o-mini"
     
     # LangSmith

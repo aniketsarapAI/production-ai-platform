@@ -1,7 +1,7 @@
 # render.yaml — Infrastructure as Code for Render
 services:
   - type: web
-    name: production-langgraph-api
+    name: production-ai-platform
     runtime: python
     region: oregon
     plan: free
@@ -15,19 +15,21 @@ services:
       - key: LOG_LEVEL
         value: INFO
       - key: RATE_LIMIT
-        value: "20/minute"
+        value: "5/minute"
       - key: CACHE_TTL_SECONDS
         value: "300"
       - key: MAX_RETRIES
         value: "3"
       - key: PRIMARY_MODEL
-        value: gpt-4o-mini
+        value: openai/gpt-4o-mini
       - key: FALLBACK_MODEL
-        value: gpt-4o-mini
+        value: openai/gpt-4o-mini
+      - key: OPENAI_BASE_URL
+        value: https://openrouter.ai/api/v1
       - key: OPENAI_API_KEY
-        sync: false  # Must be set manually — NEVER commit secrets
+        sync: false  
       - key: LANGCHAIN_API_KEY
-        sync: false  # Must be set manually
+        sync: false  
       - key: LANGCHAIN_TRACING_V2
         value: "true"
       - key: LANGCHAIN_PROJECT
