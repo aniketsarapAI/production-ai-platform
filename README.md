@@ -210,6 +210,7 @@ Primary Model
 <p align="center">
   <img src="assets/fallback.svg" alt="LangGraph Fallback Recovery Flow" width="340" />
 </p>
+
 The application uses a multi-stage recovery strategy:
 
 1. **Attempt** response generation using the primary model.
@@ -280,16 +281,7 @@ All configuration is managed through environment variables. See `.env.example`:
 | `RATE_LIMIT` | `5/minute` | Per-IP rate limit |
 | `CACHE_TTL_SECONDS` | `300` | Response cache TTL |
 | `MAX_RETRIES` | `3` | Max retry attempts before fallback |
-
-### Provider Examples
-
-| Provider | `OPENAI_BASE_URL` | Model Example |
-|---|---|---|
-| OpenRouter | `https://openrouter.ai/api/v1` | `openai/gpt-4o-mini` |
-| OpenAI Direct | `https://api.openai.com/v1` | `gpt-4o-mini` |
-| Anthropic (via OpenRouter) | `https://openrouter.ai/api/v1` | `anthropic/claude-sonnet-4-20250514` |
-| Ollama (local) | `http://localhost:11434/v1` | `llama3` |
-| Groq | `https://api.groq.com/openai/v1` | `llama-3.3-70b-versatile` |
+ 
 
 ## Project Structure
 
