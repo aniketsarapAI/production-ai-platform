@@ -43,8 +43,9 @@ class ProductionAgent:
             model=settings.primary_model,
             temperature=0,
             timeout=30,
-            max_retries=0,  # We handle retries ourselves
+            max_retries=0,
             api_key=settings.openai_api_key,
+            base_url=settings.openai_base_url,
         )
         self.fallback_llm = ChatOpenAI(
             model=settings.fallback_model,

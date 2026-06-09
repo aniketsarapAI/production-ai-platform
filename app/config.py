@@ -14,8 +14,10 @@ class Settings(BaseSettings):
     
     # LLM Configuration
     openai_api_key: str
-    primary_model: str = "gpt-4o-mini"
-    fallback_model: str = "gpt-4o-mini"
+    openai_base_url: str = "https://openrouter.ai/api/v1"
+
+    primary_model: str = "openai/gpt-4o"
+    fallback_model: str = "openai/gpt-4o-mini"
     
     # LangSmith
     langchain_tracing_v2: bool = True
