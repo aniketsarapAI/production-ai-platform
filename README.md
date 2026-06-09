@@ -27,6 +27,17 @@ A production-oriented AI platform demonstrating deployment, observability, secur
 </p>
 
 
+<p align="left">
+  <img src="https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white" alt="Python 3.12"/>
+  <img src="https://img.shields.io/badge/FastAPI-0.129-009688?logo=fastapi&logoColor=white" alt="FastAPI"/>
+  <img src="https://img.shields.io/badge/LangGraph-1.0-1C3C3C?logo=langchain&logoColor=white" alt="LangGraph"/>
+  <img src="https://img.shields.io/badge/LangChain-0.3-1C3C3C?logo=langchain&logoColor=white" alt="LangChain"/>
+  <img src="https://img.shields.io/badge/OpenRouter-API-FF6B6B?logo=openai&logoColor=white" alt="OpenRouter"/>
+  <img src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white" alt="Docker"/>
+  <img src="https://img.shields.io/badge/Render-46E3B7?logo=render&logoColor=white" alt="Render"/>
+  <img src="https://img.shields.io/badge/License-MIT-yellow" alt="License MIT"/>
+</p>
+
 ## Live Demo
 
 **API:** https://production-ai-platform.onrender.com
