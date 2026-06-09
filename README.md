@@ -1,6 +1,20 @@
 # Production AI Platform
 
-A production-grade AI agent API built with FastAPI, LangGraph, and LangChain — designed to take an LLM-powered application from local prototype to a deployable, observable, and secure production service.
+A production-oriented AI platform demonstrating deployment, observability, security, caching, rate limiting, and operational best practices for LLM applications.
+
+## Live Demo
+
+**API:** https://production-ai-platform.onrender.com
+**Swagger:** https://production-ai-platform.onrender.com/docs
+**Health:** https://production-ai-platform.onrender.com/health
+
+## Deployment Architecture
+
+```
+GitHub → Render → FastAPI → OpenRouter → LLM
+```
+
+## Application Architecture
 
 ```
 ┌─────────────┐     ┌────────────────────────────────────────────────────────┐
@@ -14,18 +28,16 @@ A production-grade AI agent API built with FastAPI, LangGraph, and LangChain —
 
 ## What This Project Demonstrates
 
-This repository is not a toy chatbot. It is a **reference architecture** for production AI engineering that shows:
-
-- **Secure-by-design** LLM deployment with prompt injection protection, PII masking, and output validation
-- **LangGraph state machine** orchestration with retry logic, model fallback, and graceful error handling
-- **Multi-provider LLM support** via OpenRouter (use OpenAI, Anthropic, or any provider through a single API key)
-- **Response caching** with TTL to reduce latency and API costs
-- **Rate limiting** to prevent abuse and control costs
-- **Structured JSON logging** ready for ELK, Datadog, or any log aggregation pipeline
-- **Real-time metrics** (latency, error rate, token usage, cache hit rate)
-- **LangSmith tracing** for full request observability
-- **Dockerized** with best-practice image (non-root user, uv package manager, layer caching, health checks)
-- **One-command deployment** to Render via infrastructure-as-code
+- FastAPI API design
+- LangGraph orchestration
+- OpenRouter integration
+- Security guardrails
+- Response caching
+- Rate limiting
+- Structured logging
+- Observability with LangSmith
+- Docker containerization
+- Cloud deployment with Render
 
 ## Table of Contents
 
