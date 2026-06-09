@@ -51,7 +51,7 @@ Production AI Platform is a deployment-ready LLM API demonstrating:
 
 **Health:** https://production-ai-platform.onrender.com/health
 
-<<<<<<< HEAD
+
 ## Deployment Architecture
 
 ```
@@ -74,7 +74,7 @@ GitHub → Render → FastAPI → OpenRouter → LLM
 </p>
 
 =======
->>>>>>> d4b09c1 (Enhance project documentation)
+
 ## What This Project Demonstrates
 
 - FastAPI API design
