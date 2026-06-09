@@ -41,7 +41,7 @@ Production AI Platform is a deployment-ready LLM API demonstrating:
 ✅ Structured JSON logging for log aggregation  
 ✅ LangSmith tracing for end-to-end request observability  
 ✅ Docker containerization with production best practices  
-✅ Render cloud deployment via infrastructure-as-code
+✅ Render cloud deployment 
 
 ## Live Demo
 
@@ -69,11 +69,6 @@ GitHub → Render → FastAPI → OpenRouter → LLM
 │ GET /metrics│     │                                                        │
 └─────────────┘     └────────────────────────────────────────────────────────┘
 ```
-<p align="center">
-  <img src="assets/arch.png" alt="AI Request Workflow Architecture" width="550" />
-</p>
-
-=======
 
 ## What This Project Demonstrates
 
@@ -181,6 +176,9 @@ POST /chat
   │
   └── Response → Client
 ```
+<p align="center">
+  <img src="assets/arch.png" alt="AI Request Workflow Architecture" width="550" />
+</p>
 
 ### Failure Handling Strategy
 
@@ -207,7 +205,11 @@ Primary Model
        ▼
       END
 ```
+### Failure Handling Strategy
 
+<p align="center">
+  <img src="assets/fallback.svg" alt="LangGraph Fallback Recovery Flow" width="340" />
+</p>
 The application uses a multi-stage recovery strategy:
 
 1. **Attempt** response generation using the primary model.
@@ -217,57 +219,7 @@ The application uses a multi-stage recovery strategy:
 
 This pattern improves reliability and provides predictable behavior during upstream LLM outages.
 
-## Quick Start
 
-### Prerequisites
-
-- Python 3.12+
-- [uv](https://docs.astral.sh/uv/) (fast Python package manager)
-- OpenRouter API key (or any OpenAI-compatible API key)
-
-### Local Setup
-
-```bash
-# Clone and enter the repository
-git clone <your-repo-url>
-cd production-ai-platform
-
-# Create environment file
-cp .env.example .env
-
-# Edit .env with your API key
-# Get a free key at https://openrouter.ai/keys
-# Then set: OPENAI_API_KEY=sk-or-v1-your-key-here
-
-# Install dependencies
-uv sync
-
-# Run the server
-uv run uvicorn app.main:app --reload --port 8000
-```
-
-### Verify It Works
-
-```bash
-# Health check
-curl http://localhost:8000/health | python3 -m json.tool
-
-# Chat request
-curl -X POST http://localhost:8000/chat \
-  -H "Content-Type: application/json" \
-  -d '{"message": "What is LangGraph in one sentence?"}' | python3 -m json.tool
-
-# Metrics
-curl http://localhost:8000/metrics | python3 -m json.tool
-```
-
-### With Docker
-
-```bash
-cp .env.example .env
-# Edit .env with your API key
-docker compose up --build
-```
 
 ## API Reference
 
@@ -360,6 +312,58 @@ All configuration is managed through environment variables. See `.env.example`:
 ├── render.yml            # Render infrastructure-as-code
 ├── pyproject.toml        # Python dependencies
 └── Production-test-commands.sh  # Interactive test suite
+```
+
+## Quick Start
+
+### Prerequisites
+
+- Python 3.12+
+- [uv](https://docs.astral.sh/uv/) (fast Python package manager)
+- OpenRouter API key (or any OpenAI-compatible API key)
+
+### Local Setup
+
+```bash
+# Clone and enter the repository
+git clone <your-repo-url>
+cd production-ai-platform
+
+# Create environment file
+cp .env.example .env
+
+# Edit .env with your API key
+# Get a free key at https://openrouter.ai/keys
+# Then set: OPENAI_API_KEY=sk-or-v1-your-key-here
+
+# Install dependencies
+uv sync
+
+# Run the server
+uv run uvicorn app.main:app --reload --port 8000
+```
+
+### Verify It Works
+
+```bash
+# Health check
+curl http://localhost:8000/health | python3 -m json.tool
+
+# Chat request
+curl -X POST http://localhost:8000/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What is LangGraph in one sentence?"}' | python3 -m json.tool
+
+# Metrics
+curl http://localhost:8000/metrics | python3 -m json.tool
+```
+
+### With Docker
+
+```bash
+cp .env.example .env
+# Edit .env with your API key
+docker compose up --build
 ```
 
 ## Local Development
