@@ -1,3 +1,6 @@
+<!-- TODO: Add hero banner image here -->
+<!-- ![Production AI Platform](assets/hero.png) -->
+
 # Production AI Platform
 
 A production-oriented AI platform demonstrating deployment, observability, security, caching, rate limiting, and operational best practices for LLM applications.
