@@ -4,11 +4,22 @@
 # Production AI Platform
 
 A production-oriented AI platform demonstrating deployment, observability, security, caching, rate limiting, and operational best practices for LLM applications.
+<p align="left">
+  <img src="https://shields.io" alt="JavaScript" />
+  <img src="https://shields.io" alt="TypeScript" />
+  <img src="https://shields.io" alt="PostgreSQL" />
+</p>
+
+<img src="{(https://img.shields.io/badge/ChatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white)}" />
+
+![image]({https://img.shields.io/badge/ChatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white})
 
 ## Live Demo
 
 **API:** https://production-ai-platform.onrender.com
+
 **Swagger:** https://production-ai-platform.onrender.com/docs
+
 **Health:** https://production-ai-platform.onrender.com/health
 
 ## Deployment Architecture
