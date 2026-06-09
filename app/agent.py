@@ -53,6 +53,7 @@ class ProductionAgent:
             timeout=30,
             max_retries=0,
             api_key=settings.openai_api_key,
+            base_url=settings.openai_base_url,
         )
         self.max_retries = settings.max_retries
         self.graph = self._build_graph()
