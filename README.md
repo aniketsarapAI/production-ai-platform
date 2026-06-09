@@ -116,37 +116,40 @@ POST /chat
   └── Response → Client
 ```
 
-### LangGraph State Machine
+### Failure Handling Strategy
 
 ```
-                    ┌──────────┐
-                    │  START   │
-                    └────┬─────┘
-                         │
-                         ▼
-                    ┌──────────┐
-                    │ Process  │  ← primary LLM
-                    └────┬─────┘
-                         │
-                    ┌────┴────┐
-                    │         │
-                    ▼         ▼
-              ┌────────┐  ┌──────────┐
-              │  END   │  │ Fallback │  ← secondary LLM
-              └────────┘  └────┬─────┘
-                               │
-                          ┌────┴────┐
-                          │         │
-                          ▼         ▼
-                    ┌────────┐  ┌──────────┐
-                    │  END   │  │  Error   │  ← graceful message
-                    └────────┘  └────┬─────┘
-                                     │
-                                     ▼
-                               ┌────────┐
-                               │  END   │
-                               └────────┘
+START
+  │
+  ▼
+Primary Model
+  │
+  ├── success ──► END
+  │
+  └── fail
+       │
+       ▼
+  Fallback Model
+       │
+       ├── success ──► END
+       │
+       └── fail
+            │
+            ▼
+  Graceful Error Handler
+       │
+       ▼
+      END
 ```
+
+The application uses a multi-stage recovery strategy:
+
+1. **Attempt** response generation using the primary model.
+2. **If the request fails**, automatically retry using a fallback model.
+3. **If both models fail**, return a graceful user-facing error message.
+4. **Prevent** raw exceptions from reaching API consumers.
+
+This pattern improves reliability and provides predictable behavior during upstream LLM outages.
 
 ## Quick Start
 
