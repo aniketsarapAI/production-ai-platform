@@ -1,18 +1,19 @@
 <!-- TODO: Add hero banner image here -->
 <!-- ![Production AI Platform](assets/hero.png) -->
+### 🛠️ Core Tech Stack
+
+<p align="left">
+  <img src="https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue" alt="Python" />
+  <img src="https://img.shields.io/badge/fastapi-109989?style=for-the-badge&logo=FASTAPI&logoColor=white" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/langchain-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white" alt="LangChain" />
+  <img src="https://img.shields.io/badge/langgraph-1C3C3C?style=for-the-badge&logo=langgraph&logoColor=white" alt="LangGraph" />
+  <img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+</p>
 
 # Production AI Platform
 
 A production-oriented AI platform demonstrating deployment, observability, security, caching, rate limiting, and operational best practices for LLM applications.
-<p align="left">
-  <img src="https://shields.io" alt="JavaScript" />
-  <img src="https://shields.io" alt="TypeScript" />
-  <img src="https://shields.io" alt="PostgreSQL" />
-</p>
 
-<img src="{(https://img.shields.io/badge/ChatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white)}" />
-
-![image]({https://img.shields.io/badge/ChatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white})
 
 ## Live Demo
 
