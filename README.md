@@ -1,6 +1,5 @@
 <!-- TODO: Add hero banner image here -->
 <!-- ![Production AI Platform](assets/hero.png) -->
-### 🛠️ Core Tech Stack
 
 
 # Production AI Platform
@@ -10,7 +9,7 @@ A production-oriented AI platform demonstrating deployment, observability, secur
   <img src="assets/hero.svg" alt="Production AI Platform Hero Banner" width="100%" />
 </p>
 
-## Tech Stack
+### 🛠️ Core Tech Stack
 
 <p align="left">
   <img src="https://img.shields.io/badge/Python_3.12-FFD43B?style=for-the-badge&logo=python&logoColor=blue" alt="Python 3.12" />
@@ -388,7 +387,7 @@ Test coverage:
 
 | Module | Tests | What's Covered |
 |---|---|---|
-| Security | 14 | Injection detection, PII masking, output validation |
+| Security | 15 | Injection detection, PII masking, output validation |
 | Cache | 5 | Hit, miss, case-insensitive, TTL expiration, stats |
 | API | — | Integration tests (to be added) |
 
