@@ -54,6 +54,9 @@ GitHub → Render → FastAPI → OpenRouter → LLM
 │ GET /metrics│     │                                                        │
 └─────────────┘     └────────────────────────────────────────────────────────┘
 ```
+<p align="center">
+  <img src="assets/arch.png" alt="AI Request Workflow Architecture" width="550" />
+</p>
 
 ## What This Project Demonstrates
 
