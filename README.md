@@ -29,6 +29,20 @@ A production-oriented AI platform demonstrating deployment, observability, secur
 
 
 
+## Overview
+
+Production AI Platform is a deployment-ready LLM API demonstrating:
+
+✅ LangGraph orchestration with model fallback and graceful error handling  
+✅ OpenRouter integration for multi-provider LLM access  
+✅ Security guardrails (prompt injection detection, PII masking)  
+✅ Response caching with TTL and case-insensitive lookup  
+✅ Rate limiting for abuse prevention  
+✅ Structured JSON logging for log aggregation  
+✅ LangSmith tracing for end-to-end request observability  
+✅ Docker containerization with production best practices  
+✅ Render cloud deployment via infrastructure-as-code
+
 ## Live Demo
 
 **API:** https://production-ai-platform.onrender.com
@@ -37,6 +51,7 @@ A production-oriented AI platform demonstrating deployment, observability, secur
 
 **Health:** https://production-ai-platform.onrender.com/health
 
+<<<<<<< HEAD
 ## Deployment Architecture
 
 ```
@@ -58,6 +73,8 @@ GitHub → Render → FastAPI → OpenRouter → LLM
   <img src="assets/arch.png" alt="AI Request Workflow Architecture" width="550" />
 </p>
 
+=======
+>>>>>>> d4b09c1 (Enhance project documentation)
 ## What This Project Demonstrates
 
 - FastAPI API design
@@ -70,6 +87,26 @@ GitHub → Render → FastAPI → OpenRouter → LLM
 - Observability with LangSmith
 - Docker containerization
 - Cloud deployment with Render
+
+## Architecture
+
+### Deployment Flow
+
+```
+GitHub → Render → FastAPI → OpenRouter → LLM
+```
+
+### Request Pipeline
+
+```
+┌─────────────┐     ┌────────────────────────────────────────────────────────┐
+│   Client    │     │                  FastAPI Application                   │
+│             │     │                                                        │
+│ POST /chat  │────▶│ Rate Limit ➔ Security Filter ➔ Cache ➔ LangGraph Agent │
+│ GET /health │     │ (slowapi)    (Regex/PII)      (SHA)   (State Machine)  │
+│ GET /metrics│     │                                                        │
+└─────────────┘     └────────────────────────────────────────────────────────┘
+```
 
 ## Table of Contents
 
@@ -524,6 +561,4 @@ Three levels of evaluation, none requiring an API key:
 | **Integration tests before deployment** | `test_api.py` is still empty. I would write integration tests that spin up the app and hit the endpoints before writing the Dockerfile. |
 | **Separate the agent from the API** | The LangGraph agent is hardcoded into the FastAPI lifespan. An independent agent microservice that the API calls via gRPC or HTTP would be more scalable and testable. |
 
-## License
-
-MIT
+[![forthebadge](/badges/made-with-python.svg)](https://forthebadge.com)
