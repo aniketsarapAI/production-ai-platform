@@ -3,13 +3,13 @@
 A production-grade AI agent API built with FastAPI, LangGraph, and LangChain — designed to take an LLM-powered application from local prototype to a deployable, observable, and secure production service.
 
 ```
-┌─────────────┐     ┌──────────────────────────────────────────────────┐
-│   Client    │     │              FastAPI + LangGraph                 │
-│             │     │                                                  │
-│ POST /chat  │────▶│  Security → Cache → LangGraph Agent → Response  │
-│ GET /health │     │  Pipeline    Lookup   (retry, fallback,          │
-│ GET /metrics│     │  (in/out)            error handling)             │
-└─────────────┘     └──────────────────────────────────────────────────┘
+┌─────────────┐     ┌────────────────────────────────────────────────────────┐
+│   Client    │     │                  FastAPI Application                   │
+│             │     │                                                        │
+│ POST /chat  │────▶│ Rate Limit ➔ Security Filter ➔ Cache ➔ LangGraph Agent │
+│ GET /health │     │ (slowapi)    (Regex/PII)      (SHA)   (State Machine)  │
+│ GET /metrics│     │                                                        │
+└─────────────┘     └────────────────────────────────────────────────────────┘
 ```
 
 ## What This Project Demonstrates
@@ -382,7 +382,7 @@ This project is actively developed. Planned improvements:
 - [ ] Multi-tenant document isolation
 - [ ] Agent tools (web search, code execution, calculator)
 
-## FAQ
+## Architectural Decisions Log (ADR) & System Review
 
 ### 01. Who is this for? What does it solve?
 
