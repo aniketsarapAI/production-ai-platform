@@ -561,4 +561,4 @@ Three levels of evaluation, none requiring an API key:
 | **Integration tests before deployment** | `test_api.py` is still empty. I would write integration tests that spin up the app and hit the endpoints before writing the Dockerfile. |
 | **Separate the agent from the API** | The LangGraph agent is hardcoded into the FastAPI lifespan. An independent agent microservice that the API calls via gRPC or HTTP would be more scalable and testable. |
 
-[![forthebadge](/badges/made-with-python.svg)](https://forthebadge.com)
+
