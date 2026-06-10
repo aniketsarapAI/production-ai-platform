@@ -36,7 +36,7 @@ A production-oriented AI platform demonstrating deployment, observability, secur
 Production AI Platform is a deployment-ready LLM API demonstrating:
 
 ✅ LangGraph orchestration with model fallback and graceful error handling  
-✅ OpenRouter integration for multi-provider LLM access  
+✅ OpenRouter integration for multi-providƒer LLM access  
 ✅ Security guardrails (prompt injection detection, PII masking)  
 ✅ Response caching with TTL and case-insensitive lookup  
 ✅ Rate limiting for abuse prevention  
@@ -128,7 +128,7 @@ These are intentional. Every trade-off can be addressed incrementally (add Prome
 
 Three levels of evaluation, none requiring an API key:
 
-**Unit tests (20 tests, zero external dependencies):** Security module tests (14 tests) verify injection detection, PII masking, and output validation. Cache tests (5 tests) verify hit/miss, TTL expiration, case-insensitive matching, and stats tracking. All run in <100ms.
+**Unit tests (20 tests, zero external dependencies):** Security module tests (15 tests) verify injection detection, PII masking, and output validation. Cache tests (5 tests) verify hit/miss, TTL expiration, case-insensitive matching, and stats tracking. All run in <100ms.
 
 **Standalone module demos:** Every module (`security.py`, `cache.py`, `monitoring.py`) includes runnable demo code in its docstring that exercises the module independently.
 
