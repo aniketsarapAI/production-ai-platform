@@ -8,8 +8,6 @@ A production-oriented AI platform demonstrating deployment, observability, secur
 
 ## Table of Contents
 
-- [Tech Stack](#-core-tech-stack)
-- [Live Demo](#live-demo)
 - [Project Overview](#project-overview)
 - [Features](#features)
 - [Engineering Decisions](#engineering-decisions)
