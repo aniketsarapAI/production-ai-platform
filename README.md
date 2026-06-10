@@ -6,6 +6,19 @@ A production-oriented AI platform demonstrating deployment, observability, secur
   <img src="assets/hero.svg" alt="Production AI Platform System Blueprint" width="100%" />
 </p>
 
+## Table of Contents
+
+- [Tech Stack](#-core-tech-stack)
+- [Live Demo](#live-demo)
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Engineering Decisions](#engineering-decisions)
+- [Architecture](#architecture)
+- [Configuration](#configuration)
+- [Project Structure](#project-structure)
+- [Testing](#testing)
+- [Quick Start](#quick-start)
+- [Roadmap](#roadmap)
 
 ### 🛠️ Core Tech Stack
 
