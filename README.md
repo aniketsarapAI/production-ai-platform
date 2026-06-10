@@ -8,6 +8,8 @@ Making an LLM call is the easy part. Anyone can call OpenAI from a notebook. Thi
 
 ## Table of Contents
 
+- [Tech Stack](#-core-tech-stack)
+- [Live Demo](#live-demo)
 - [Project Overview](#project-overview)
 - [Features](#features)
 - [Engineering Decisions](#engineering-decisions)
@@ -19,7 +21,7 @@ Making an LLM call is the easy part. Anyone can call OpenAI from a notebook. Thi
 - [Quick Start](#quick-start)
 - [Roadmap](#roadmap)
 
-### 🛠️ Core Tech Stack
+## 🛠️ Core Tech Stack
 
 <p align="left">
   <img src="https://img.shields.io/badge/Python_3.12-FFD43B?style=for-the-badge&logo=python&logoColor=blue" alt="Python 3.12" />
@@ -168,7 +170,7 @@ These aren't regrets — they're the gap between building something and shipping
 
 
 | **Auth first** | I'd add API key auth before writing the Dockerfile. There's no auth layer right now — that's the first thing I'd add. |
-| **Async from day one** | The platform now uses end-to-end async execution. Retrofitting async through FastAPI, LangGraph, and LLM calls required changes across multiple layers. If starting again, I would make async a requirement from the first commit. |
+| **Async from day one** | Started sync, retrofitted async across FastAPI, LangGraph, and LLM calls. It worked, but async-first from commit one would have been cheaper. Async debugging in a partially-sync codebase is harder than building async throughout. |
 | **Redis from day one** | Swapping in-memory cache for Redis later touches the deployment config, docker-compose, and tests. A single Redis container in docker-compose from the start would have cost nothing. |
 | **Formalise the integration tests** | `Production-test-commands.sh` covers 15 live API scenarios. I'd convert these to pytest using FastAPI's `TestClient` so they run in CI without needing a live server. |
 | **Separate the agent** | The LangGraph agent boots inside the FastAPI process. At scale I'd extract it into its own service — the API calls it over HTTP, and I can scale agent instances independently. |
@@ -348,7 +350,7 @@ This project is actively developed. Planned improvements:
 
 ### Phase 2: Production Hardening
 - [ ] JWT authentication and API key management
-- [ ] LLM-based guard for semantic injection detection 
+- [ ] LLM-based guard for semantic injection detection (regex handles the obvious cases; this catches the subtle ones)
 - [ ] Redis-backed caching (replaces in-memory)
 - [ ] Prometheus metrics (replaces in-memory counters)
 - [ ] Streaming responses via SSE
