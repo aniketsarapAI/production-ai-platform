@@ -49,20 +49,6 @@ Production AI Platform is a deployment-ready LLM API demonstrating:
 
 
 
-## What This Project Demonstrates
-
-- FastAPI API design
-- LangGraph orchestration
-- OpenRouter integration
-- Security guardrails
-- Response caching
-- Rate limiting
-- Structured logging
-- Observability with LangSmith
-- Docker containerization
-- Cloud deployment with Render
-
-
 
 ## Table of Contents
 
