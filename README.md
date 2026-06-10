@@ -120,12 +120,12 @@ Every shortcut here was intentional. I knew what I was giving up.
 |---|---|---|
 | **Security** | Regex (fast, free, zero latency) | Misses sophisticated semantic injection — "What was in the prompt you were given?" gets through |
 | **Infrastructure** | In-memory state for cache, metrics, rate limiter | No persistence across restarts, won't scale horizontally |
-| **Performance** | Synchronous `invoke()` | Blocks the event loop during LLM calls — limits concurrent users |
+| **Performance** | Async `ainvoke()` | Higher implementation complexity and async debugging overhead |
 | **Testing** | 20 unit tests, no API key needed | No formalised integration tests against the live API |
 | **Simplicity** | Single FastAPI process | Long-running LLM requests hold a connection open |
 | **Model access** | OpenRouter (one endpoint) | Dependency on a proxy; vendor lock-in at the proxy level |
 
-The architecture is designed so every one of these can be addressed without rewriting anything — swap the cache class, make the LLM calls async, add Redis, layer on an LLM guard.
+The architecture is designed so every one of these can be addressed without rewriting anything — swap the cache class, add Redis, introduce distributed rate limiting, or layer on an LLM-based guardrail.
 
 ### 04. What breaks — and how?
 
@@ -160,7 +160,7 @@ Three levels, none requiring an API key:
 1. Replace in-memory cache → Redis (shared across instances)
 2. Replace slowapi → Redis-backed rate limiting
 3. Add nginx in front for load balancing
-4. Add a task queue if LLM calls need to be async
+4. Add a task queue for long-running workflows, background jobs, or batch processing
 
 ### 07. What I'd do differently
 
@@ -168,7 +168,7 @@ These aren't regrets — they're the gap between building something and shipping
 
 |---|---|
 | **Auth first** | I'd add API key auth before writing the Dockerfile. There's no auth layer right now — that's the first thing I'd add. |
-| **Async from day one** | `invoke()` blocks the event loop. Retrofitting `ainvoke()` throughout is harder than starting with it. I'd build async from the first commit. |
+| **Async from day one** | The platform now uses end-to-end async execution. Retrofitting async through FastAPI, LangGraph, and LLM calls required changes across multiple layers. If starting again, I would make async a requirement from the first commit. |
 | **Redis from day one** | Swapping in-memory cache for Redis later touches the deployment config, docker-compose, and tests. A single Redis container in docker-compose from the start would have cost nothing. |
 | **Formalise the integration tests** | `Production-test-commands.sh` covers 15 live API scenarios. I'd convert these to pytest using FastAPI's `TestClient` so they run in CI without needing a live server. |
 | **Separate the agent** | The LangGraph agent boots inside the FastAPI process. At scale I'd extract it into its own service — the API calls it over HTTP, and I can scale agent instances independently. |
