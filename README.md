@@ -164,11 +164,8 @@ Three levels, none requiring an API key:
 3. Add nginx in front for load balancing
 4. Add a task queue for long-running workflows, background jobs, or batch processing
 
-### 07. What I'd do differently
-
-These aren't regrets — they're the gap between building something and shipping something.
-
-
+| Item | Notes |
+|------|-------|
 | **Auth first** | I'd add API key auth before writing the Dockerfile. There's no auth layer right now — that's the first thing I'd add. |
 | **Async from day one** | Started sync, retrofitted async across FastAPI, LangGraph, and LLM calls. It worked, but async-first from commit one would have been cheaper. Async debugging in a partially-sync codebase is harder than building async throughout. |
 | **Redis from day one** | Swapping in-memory cache for Redis later touches the deployment config, docker-compose, and tests. A single Redis container in docker-compose from the start would have cost nothing. |
