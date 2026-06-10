@@ -166,7 +166,7 @@ Three levels, none requiring an API key:
 
 These aren't regrets — they're the gap between building something and shipping something.
 
-|---|---|
+
 | **Auth first** | I'd add API key auth before writing the Dockerfile. There's no auth layer right now — that's the first thing I'd add. |
 | **Async from day one** | The platform now uses end-to-end async execution. Retrofitting async through FastAPI, LangGraph, and LLM calls required changes across multiple layers. If starting again, I would make async a requirement from the first commit. |
 | **Redis from day one** | Swapping in-memory cache for Redis later touches the deployment config, docker-compose, and tests. A single Redis container in docker-compose from the start would have cost nothing. |
