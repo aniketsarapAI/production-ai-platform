@@ -264,21 +264,8 @@ Test coverage:
 
 **It solves:** The gap between a working prototype and a production service. Most LLM projects stop at "it works on my machine." This project adds the layers that make it safe to expose publicly: prompt injection protection, PII controls, rate limiting, structured logging, tracing, metrics, caching, and containerized deployment.
 
-### 02. What does the architecture look like?
 
-```
-Client → FastAPI → slowapi (rate limit) → Security Pipeline
-  → Response Cache → LangGraph Agent (primary → fallback → error)
-  → Output Validation → Response
-```
-
-Four API endpoints:
-- `POST /chat` — the main agent endpoint (full pipeline above)
-- `GET /health` — deep health check (validates agent, cache, security are live)
-- `GET /metrics` — request latency, errors, token counts, cache hit rate
-- `GET /cache/stats` — cache hit/miss numbers
-
-### 03. What design decisions did you make — and why?
+### 02. What design decisions did you make — and why?
 
 | Decision | Why |
 |---|---|
@@ -290,7 +277,7 @@ Four API endpoints:
 | **`pydantic-settings` over raw `os.getenv`** | Type validation, default values, `.env` file loading, and a single cached settings object. Every consumer calls `get_settings()` and gets validated config. |
 | **`slowapi` over custom rate limiting** | It just works with FastAPI decorators and has a built-in 429 handler. Zero boilerplate. |
 
-### 04. What trade-offs did you choose?
+### 03. What trade-offs did you choose?
 
 | Trade-off | Chose | Sacrificed |
 |---|---|---|
@@ -303,7 +290,7 @@ Four API endpoints:
 
 These are intentional. Every trade-off can be addressed incrementally (add Prometheus, swap to Redis, make calls async) without rewriting the architecture.
 
-### 05. What failure modes exist?
+### 04. What failure modes exist?
 
 | Failure Mode | What Happens | Mitigation |
 |---|---|---|
@@ -316,7 +303,7 @@ These are intentional. Every trade-off can be addressed incrementally (add Prome
 | **Out of memory** | Container OOM-killed | Docker restart policy (`restart: unless-stopped`) |
 | **Cache stampede** | Multiple identical requests all miss cache simultaneously and all call the LLM | TTL-based expiry; a mutex lock on cache key would prevent this at scale |
 
-### 06. How did you evaluate quality?
+### 05. How did you evaluate quality?
 
 Three levels of evaluation, none requiring an API key:
 
@@ -328,7 +315,7 @@ Three levels of evaluation, none requiring an API key:
 
 **What is missing:** RAGAS evaluation (no RAG pipeline exists yet), regression benchmarks, prompt quality scoring, and integration tests with the live API.
 
-### 07. How would this run beyond your laptop?
+### 06. How would this run beyond your laptop?
 
 **One-command deployment to Render** — the `render.yml` file defines the service, build command, start command, environment variables, and health check path. Connect your GitHub repo and Render auto-detects the configuration. Free tier included.
 
@@ -341,7 +328,7 @@ Three levels of evaluation, none requiring an API key:
 4. Add a database for persistence (if needed)
 5. Set up a task queue for async LLM processing (optional)
 
-### 08. What would you do differently next time?
+### 07. What would you do differently next time?
 
 | Lesson | What I'd Change |
 |---|---|
