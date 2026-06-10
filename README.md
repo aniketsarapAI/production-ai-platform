@@ -5,9 +5,7 @@
 # Production AI Platform
 
 A production-oriented AI platform demonstrating deployment, observability, security, caching, rate limiting, and operational best practices for LLM applications.
-<p align="center">
-  <img src="assets/hero.svg" alt="Production AI Platform Hero Banner" width="100%" />
-</p>
+
 
 ### 🛠️ Core Tech Stack
 
@@ -24,7 +22,6 @@ A production-oriented AI platform demonstrating deployment, observability, secur
   <img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
   <img src="https://img.shields.io/badge/Render_Cloud-46E3B7?style=for-the-badge&logo=render&logoColor=white" alt="Render" />
 </p>
-
 
 
 
@@ -51,23 +48,6 @@ Production AI Platform is a deployment-ready LLM API demonstrating:
 **Health:** https://production-ai-platform.onrender.com/health
 
 
-## Deployment Architecture
-
-```
-GitHub → Render → FastAPI → OpenRouter → LLM
-```
-
-## Application Architecture
-
-```
-┌─────────────┐     ┌────────────────────────────────────────────────────────┐
-│   Client    │     │                  FastAPI Application                   │
-│             │     │                                                        │
-│ POST /chat  │────▶│ Rate Limit ➔ Security Filter ➔ Cache ➔ LangGraph Agent │
-│ GET /health │     │ (slowapi)    (Regex/PII)      (SHA)   (State Machine)  │
-│ GET /metrics│     │                                                        │
-└─────────────┘     └────────────────────────────────────────────────────────┘
-```
 
 ## What This Project Demonstrates
 
@@ -82,25 +62,7 @@ GitHub → Render → FastAPI → OpenRouter → LLM
 - Docker containerization
 - Cloud deployment with Render
 
-## Architecture
 
-### Deployment Flow
-
-```
-GitHub → Render → FastAPI → OpenRouter → LLM
-```
-
-### Request Pipeline
-
-```
-┌─────────────┐     ┌────────────────────────────────────────────────────────┐
-│   Client    │     │                  FastAPI Application                   │
-│             │     │                                                        │
-│ POST /chat  │────▶│ Rate Limit ➔ Security Filter ➔ Cache ➔ LangGraph Agent │
-│ GET /health │     │ (slowapi)    (Regex/PII)      (SHA)   (State Machine)  │
-│ GET /metrics│     │                                                        │
-└─────────────┘     └────────────────────────────────────────────────────────┘
-```
 
 ## Table of Contents
 
@@ -179,31 +141,7 @@ POST /chat
   <img src="assets/arch.png" alt="AI Request Workflow Architecture" width="550" />
 </p>
 
-### Failure Handling Strategy
 
-```
-START
-  │
-  ▼
-Primary Model
-  │
-  ├── success ──► END
-  │
-  └── fail
-       │
-       ▼
-  Fallback Model
-       │
-       ├── success ──► END
-       │
-       └── fail
-            │
-            ▼
-  Graceful Error Handler
-       │
-       ▼
-      END
-```
 ### Failure Handling Strategy
 
 <p align="center">
@@ -305,6 +243,43 @@ All configuration is managed through environment variables. See `.env.example`:
 └── Production-test-commands.sh  # Interactive test suite
 ```
 
+
+## Testing
+
+```bash
+# Run all tests
+uv run pytest tests/ -v
+
+# Run specific test modules (no API key needed)
+uv run pytest tests/test_security.py tests/test_cache.py -v
+
+# Run with coverage
+uv run pytest tests/ -v --cov=app
+```
+
+Test coverage:
+
+| Module | Tests | What's Covered |
+|---|---|---|
+| Security | 15 | Injection detection, PII masking, output validation |
+| Cache | 5 | Hit, miss, case-insensitive, TTL expiration, stats |
+| API | — | Integration tests (to be added) |
+
+## Docker
+
+### Build and Run
+
+```bash
+# Build
+docker build -t production-ai-platform .
+
+# Run with .env
+docker run -p 8000:8000 --env-file .env production-ai-platform
+
+# Or using docker-compose
+docker compose up --build
+```
+
 ## Quick Start
 
 ### Prerequisites
@@ -370,49 +345,6 @@ bash Production-test-commands.sh
 uv run python -c "from app.security import SecurityPipeline; pipeline = SecurityPipeline(); print(pipeline.check_input('What is Python?'))"
 ```
 
-## Testing
-
-```bash
-# Run all tests
-uv run pytest tests/ -v
-
-# Run specific test modules (no API key needed)
-uv run pytest tests/test_security.py tests/test_cache.py -v
-
-# Run with coverage
-uv run pytest tests/ -v --cov=app
-```
-
-Test coverage:
-
-| Module | Tests | What's Covered |
-|---|---|---|
-| Security | 15 | Injection detection, PII masking, output validation |
-| Cache | 5 | Hit, miss, case-insensitive, TTL expiration, stats |
-| API | — | Integration tests (to be added) |
-
-## Docker
-
-### Build and Run
-
-```bash
-# Build
-docker build -t production-ai-platform .
-
-# Run with .env
-docker run -p 8000:8000 --env-file .env production-ai-platform
-
-# Or using docker-compose
-docker compose up --build
-```
-
-### Docker Features
-
-- **Slim image** — `python:3.12-slim` base (~120MB)
-- **Non-root user** — runs as `appuser` for security
-- **uv package manager** — fast dependency resolution and caching
-- **Layer caching** — dependencies copied and installed before application code
-- **HEALTHCHECK** — Docker-native health monitoring against `/health`
 
 ## Deployment
 
