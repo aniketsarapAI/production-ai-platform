@@ -341,111 +341,39 @@ Three levels of evaluation, none requiring an API key:
 
 ## Quick Start
 
-### Prerequisites
-
-- Python 3.12+
-- [uv](https://docs.astral.sh/uv/) (fast Python package manager)
-- OpenRouter API key (or any OpenAI-compatible API key)
-
-### Local Setup
-
 ```bash
-# Clone and enter the repository
-git clone <your-repo-url>
+git clone <repo-url>
 cd production-ai-platform
 
-# Create environment file
 cp .env.example .env
+# Set OPENAI_API_KEY
 
-# Edit .env with your API key
-# Get a free key at https://openrouter.ai/keys
-# Then set: OPENAI_API_KEY=sk-or-v1-your-key-here
-
-# Install dependencies
 uv sync
-
-# Run the server
-uv run uvicorn app.main:app --reload --port 8000
+uv run uvicorn app.main:app --reload
 ```
 
-### Verify It Works
+### Verify
 
 ```bash
-# Health check
-curl http://localhost:8000/health | python3 -m json.tool
-
-# Chat request
-curl -X POST http://localhost:8000/chat \
-  -H "Content-Type: application/json" \
-  -d '{"message": "What is LangGraph in one sentence?"}' | python3 -m json.tool
-
-# Metrics
-curl http://localhost:8000/metrics | python3 -m json.tool
+curl http://localhost:8000/health
 ```
 
-### With Docker
+### Docker
 
 ```bash
-cp .env.example .env
-# Edit .env with your API key
 docker compose up --build
 ```
 
-## Local Development
+### Deploy
 
-```bash
-# Run with hot reload
-uv run uvicorn app.main:app --reload --port 8000
+GitHub → Render → Connect Repository → Set `OPENAI_API_KEY` → Deploy
 
-# Run the interactive test suite
-bash Production-test-commands.sh
+### Environment
 
-# Run standalone module tests (no server needed)
-uv run python -c "from app.security import SecurityPipeline; pipeline = SecurityPipeline(); print(pipeline.check_input('What is Python?'))"
-```
-
-## Docker
-
-### Build and Run
-
-```bash
-# Build
-docker build -t production-ai-platform .
-
-# Run with .env
-docker run -p 8000:8000 --env-file .env production-ai-platform
-
-# Or using docker-compose
-docker compose up --build
-```
-
-## Deployment
-
-### Deploy to Render (One-Click)
-
-1. Push this repository to GitHub
-2. Go to [dashboard.render.com](https://dashboard.render.com) → New Web Service
-3. Connect your repository
-4. Render auto-detects `render.yml` — click **Apply**
-5. Set the two secrets in the Render dashboard:
-   - `OPENAI_API_KEY` → your OpenRouter key
-   - `LANGCHAIN_API_KEY` → your LangSmith key (optional)
-6. Deploy
-
-The `render.yml` pre-configures:
-
-- Python 3.12 runtime
-- uv-based build and start commands
-- All environment variables with defaults
-- Health check path at `/health`
-- Auto-deploy on push
-
-### Environment-Specific Configuration
-
-The `APP_ENV` variable controls behavior:
-
-- `development` — relaxed rate limits, verbose logging
-- `production` — stricter rate limits, JSON logging, production-ready
+| Variable | Purpose |
+|---|---|
+| `APP_ENV=development` | Verbose logging, relaxed limits |
+| `APP_ENV=production` | Production logging and rate limits |
 
 ## Roadmap
 
