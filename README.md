@@ -47,7 +47,7 @@ Making an LLM call is the easy part. Anyone can call OpenAI from a notebook. Thi
 Production AI Platform is a deployment-ready LLM API demonstrating:
 
 ✅ LangGraph orchestration with model fallback and graceful error handling  
-✅ OpenRouter integration for multi-providƒer LLM access  
+✅ OpenRouter integration for multi-provider LLM access  
 ✅ Security guardrails (prompt injection detection, PII masking)  
 ✅ Response caching with TTL and case-insensitive lookup  
 ✅ Rate limiting for abuse prevention  
