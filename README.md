@@ -31,7 +31,7 @@ A production-oriented AI platform demonstrating deployment, observability, secur
 
 **Health:** https://production-ai-platform.onrender.com/health
 
-## Project Metrics
+## Project Overview
 
 Production AI Platform is a deployment-ready LLM API demonstrating:
 
