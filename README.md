@@ -348,21 +348,6 @@ Three levels of evaluation, none requiring an API key:
 | **Separate the agent from the API** | The LangGraph agent is hardcoded into the FastAPI lifespan. An independent agent microservice that the API calls via gRPC or HTTP would be more scalable and testable. |
 
 
-## Docker
-
-### Build and Run
-
-```bash
-# Build
-docker build -t production-ai-platform .
-
-# Run with .env
-docker run -p 8000:8000 --env-file .env production-ai-platform
-
-# Or using docker-compose
-docker compose up --build
-```
-
 ## Quick Start
 
 ### Prerequisites
@@ -428,6 +413,20 @@ bash Production-test-commands.sh
 uv run python -c "from app.security import SecurityPipeline; pipeline = SecurityPipeline(); print(pipeline.check_input('What is Python?'))"
 ```
 
+## Docker
+
+### Build and Run
+
+```bash
+# Build
+docker build -t production-ai-platform .
+
+# Run with .env
+docker run -p 8000:8000 --env-file .env production-ai-platform
+
+# Or using docker-compose
+docker compose up --build
+```
 
 ## Deployment
 
