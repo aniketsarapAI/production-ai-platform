@@ -218,7 +218,7 @@ All configuration is managed through environment variables. See `.env.example`:
 │   ├── cache.py          # In-memory response cache with TTL
 │   └── monitoring.py     # JSON logger, metrics collector, request timer
 ├── tests/
-│   ├── test_security.py  # 14 tests — injection, PII, output validation
+│   ├── test_security.py  # 15 tests — injection, PII, output validation
 │   ├── test_cache.py     # 5 tests — hit, miss, TTL, case-insensitive, stats
 │   └── test_api.py       # Integration test placeholder
 ├── .env.example          # All config variables with defaults
