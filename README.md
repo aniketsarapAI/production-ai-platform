@@ -252,25 +252,6 @@ Test coverage:
 | API | — | Integration tests (to be added) |
 
 
-## Roadmap
-
-This project is actively developed. Planned improvements:
-
-### Phase 2: Production Hardening
-- [ ] JWT authentication and API key management
-- [ ] Redis-backed caching (replaces in-memory)
-- [ ] Prometheus metrics (replaces in-memory counters)
-- [ ] Streaming responses via SSE
-- [ ] Async LLM calls
-- [ ] GitHub Actions CI/CD
-
-### Phase 3: Advanced AI Platform
-- [ ] Document ingestion and RAG pipeline (vector store + retrieval)
-- [ ] RAGAS evaluation suite
-- [ ] LangFuse observability integration
-- [ ] Multi-tenant document isolation
-- [ ] Agent tools (web search, code execution, calculator)
-
 ## Architectural Decisions Log (ADR) & System Review
 
 ### 01. Who is this for? What does it solve?
@@ -475,3 +456,22 @@ The `APP_ENV` variable controls behavior:
 
 - `development` — relaxed rate limits, verbose logging
 - `production` — stricter rate limits, JSON logging, production-ready
+
+## Roadmap
+
+This project is actively developed. Planned improvements:
+
+### Phase 2: Production Hardening
+- [ ] JWT authentication and API key management
+- [ ] Redis-backed caching (replaces in-memory)
+- [ ] Prometheus metrics (replaces in-memory counters)
+- [ ] Streaming responses via SSE
+- [ ] Async LLM calls
+- [ ] GitHub Actions CI/CD
+
+### Phase 3: Advanced AI Platform
+- [ ] Document ingestion and RAG pipeline (vector store + retrieval)
+- [ ] RAGAS evaluation suite
+- [ ] LangFuse observability integration
+- [ ] Multi-tenant document isolation
+- [ ] Agent tools (web search, code execution, calculator)
