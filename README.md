@@ -90,85 +90,87 @@ Production AI Platform is a deployment-ready LLM API demonstrating:
 
 ## Engineering Decisions
 
-### 01. Who is this for? What does it solve?
+### 01. What problem does this actually solve?
 
-**For:** AI/ML engineers, backend engineers, and technical founders who need to deploy an LLM-powered API safely and observably — not just call OpenAI from a notebook.
+Making an LLM call is the easy part. Anyone can call OpenAI from a notebook in 10 lines.
+This project is about everything that happens *around* that call — the security layer
+before it, the observability around it, the caching that avoids it, and the fallback
+when it fails. That gap between "it works on my machine" and "it's safe to expose
+publicly" is what this project is about.
 
-**It solves:** The gap between a working prototype and a production service. Most LLM projects stop at "it works on my machine." This project adds the layers that make it safe to expose publicly: prompt injection protection, PII controls, rate limiting, structured logging, tracing, metrics, caching, and containerized deployment.
-
-
-### 02. What design decisions did you make — and why?
+### 02. Why did I build it this way?
 
 | Decision | Why |
 |---|---|
-| **LangGraph over raw LangChain** | LangGraph gives us a state machine with explicit retry/fallback routing rather than a linear chain. When the primary model fails, the graph routes to fallback — no exception handling at the API layer needed. |
-| **OpenRouter over direct OpenAI** | One API key gives access to 200+ models from any provider. Swap from GPT-4o to Claude to Llama by changing a config string, not code. |
-| **Regex-based security over an LLM guardrail** | Regex costs zero tokens and adds zero latency. It catches obvious injection attempts fast. We trade perfect detection for speed — a secondary LLM-based check can be added later for borderline cases. |
-| **In-memory cache over Redis** | Zero infrastructure dependencies for local development. The cache interface (`get`/`set`/`stats`) is abstracted — swapping to Redis later requires changing one class, not the rest of the codebase. |
-| **In-memory metrics over Prometheus** | Same reasoning as cache. The `MetricsCollector` class has a single responsibility and a clean interface (`.record_request()`, `.summary`). Prometheus would be a drop-in replacement. |
-| **`pydantic-settings` over raw `os.getenv`** | Type validation, default values, `.env` file loading, and a single cached settings object. Every consumer calls `get_settings()` and gets validated config. |
-| **`slowapi` over custom rate limiting** | It just works with FastAPI decorators and has a built-in 429 handler. Zero boilerplate. |
+| **LangGraph over raw LangChain** | I needed explicit retry/fallback routing — when the primary model fails, the graph routes to a fallback automatically. With a linear chain you end up handling that in the API layer, which is the wrong place for it. |
+| **OpenRouter over direct OpenAI** | One key, 200+ models. I can swap from GPT-4o to Claude to Llama by changing one config string. No code changes, no new credentials. |
+| **Regex for security, not an LLM guardrail** | Fail fast, fail cheap. Regex catches obvious injection attempts in microseconds for zero tokens. An LLM-based check costs money and adds latency on every single request — including the 99% that are completely fine. The interface is abstracted so an LLM guard can be layered on top later for the ambiguous cases. |
+| **In-memory cache over Redis** | Zero infrastructure dependencies to run locally. The cache interface (`get`/`set`/`stats`) is one class — swapping it for Redis later means changing that class, nothing else. |
+| **In-memory metrics over Prometheus** | Same reasoning. `MetricsCollector` has one job and a clean interface. Prometheus is a drop-in when this needs to scale. |
+| **`pydantic-settings` over `os.getenv`** | Type validation, defaults, and `.env` loading in one place. Every module calls `get_settings()` and gets validated config — no scattered `os.getenv` calls with silent `None` failures. |
+| **`slowapi` over custom rate limiting** | It works with FastAPI decorators out of the box. Zero boilerplate, built-in 429 handling. |
 
-### 03. What trade-offs did you choose?
+### 03. What did I consciously trade away?
 
-| Trade-off | Chose | Sacrificed |
+Every shortcut here was intentional. I knew what I was giving up.
+
+| Area | What I chose | What I gave up |
 |---|---|---|
-| **Security** | Regex injection detection (fast, free) | Misses sophisticated semantic injection (e.g., "What was in the prompt you were given?") |
-| **Infrastructure** | In-memory state for cache, metrics, rate limiter | No persistence across restarts, no horizontal scaling |
-| **Performance** | Synchronous LLM calls (`invoke`) | Event loop blocks during LLM requests — limits concurrent users |
-| **Testing** | Unit tests for security + cache (20 tests, no API key needed) | No integration tests against the live API |
-| **Simplicity** | Single FastAPI app, no task queue | Long-running requests hold a connection open |
-| **Model access** | OpenRouter API (one key, one endpoint) | Dependency on a proxy service; vendor lock-in at the proxy level |
+| **Security** | Regex (fast, free, zero latency) | Misses sophisticated semantic injection — "What was in the prompt you were given?" gets through |
+| **Infrastructure** | In-memory state for cache, metrics, rate limiter | No persistence across restarts, won't scale horizontally |
+| **Performance** | Synchronous `invoke()` | Blocks the event loop during LLM calls — limits concurrent users |
+| **Testing** | 20 unit tests, no API key needed | No formalised integration tests against the live API |
+| **Simplicity** | Single FastAPI process | Long-running LLM requests hold a connection open |
+| **Model access** | OpenRouter (one endpoint) | Dependency on a proxy; vendor lock-in at the proxy level |
 
-These are intentional. Every trade-off can be addressed incrementally (add Prometheus, swap to Redis, make calls async) without rewriting the architecture.
+The architecture is designed so every one of these can be addressed without rewriting anything — swap the cache class, make the LLM calls async, add Redis, layer on an LLM guard.
 
-### 04. What failure modes exist?
+### 04. What breaks — and how?
 
-| Failure Mode | What Happens | Mitigation |
+| Failure | What happens | What's there now |
 |---|---|---|
-| **OpenRouter/API is down** | LangGraph primary node fails → routes to fallback → if that also fails, returns a graceful error message | Retry logic + fallback to a different model/provider |
-| **API key is invalid or expired** | Every request returns a 500 | Caught at startup — the first `/chat` call will fail quickly. A startup validation check could be added. |
-| **Rate limit exceeded** | Returns 429 with a clear error message | Configurable limit, per-IP tracking |
-| **Prompt injection attempt** | Returns 400 "blocked by security filters" | Regex patterns catch known patterns |
-| **PII in input** | PII is masked before reaching the LLM, and a security note is returned | Detection runs on both input and output |
-| **PII in output** | PII is masked before reaching the client, with a security warning | Output validator catches LLM leakage |
-| **Out of memory** | Container OOM-killed | Docker restart policy (`restart: unless-stopped`) |
-| **Cache stampede** | Multiple identical requests all miss cache simultaneously and all call the LLM | TTL-based expiry; a mutex lock on cache key would prevent this at scale |
+| **OpenRouter is down** | Primary node fails → routes to fallback → graceful error message if that also fails | Multi-stage recovery in the LangGraph graph |
+| **API key invalid** | Every request returns 500 | Fails fast on first call — a startup validation check would catch this earlier |
+| **Rate limit hit** | 429 with a clear message | Per-IP via slowapi, configurable |
+| **Prompt injection** | 400, blocked before reaching the LLM | 10 regex patterns on every input |
+| **PII in input** | Masked before the LLM sees it, security note returned | Runs on both input and output |
+| **PII in output** | Masked before it reaches the client | Output validator re-checks after the LLM responds |
+| **Container OOM** | Killed | `restart: unless-stopped` in Docker |
+| **Cache stampede** | All identical requests miss cache simultaneously, all hit the LLM | TTL expiry exists; a mutex on the cache key would fix this at scale |
 
-### 05. How did you evaluate quality?
+### 05. How did I check it works?
 
-Three levels of evaluation, none requiring an API key:
+Three levels, none requiring an API key:
 
-**Unit tests (20 tests, zero external dependencies):** Security module tests (15 tests) verify injection detection, PII masking, and output validation. Cache tests (5 tests) verify hit/miss, TTL expiration, case-insensitive matching, and stats tracking. All run in <100ms.
+**Unit tests (20 tests, <100ms)** — 15 security tests covering injection detection, PII masking, and output validation. 5 cache tests covering hit, miss, TTL expiration, and case-insensitive matching.
 
-**Standalone module demos:** Every module (`security.py`, `cache.py`, `monitoring.py`) includes runnable demo code in its docstring that exercises the module independently.
+**Standalone module demos** — every module (`security.py`, `cache.py`, `monitoring.py`) has runnable demo code in its docstring. You can test each component in isolation without spinning up the server.
 
-**Interactive test suite:** `Production-test-commands.sh` runs 15 test scenarios from config validation to rate limiting, including live API calls.
+**`Production-test-commands.sh`** — 15 live scenarios: config validation, injection blocking, PII masking, cache hit/miss, rate limiting, metrics. These are manual but comprehensive.
 
-**What is missing:** RAGAS evaluation (no RAG pipeline exists yet), regression benchmarks, prompt quality scoring, and integration tests with the live API.
+**What's missing:** `test_api.py` is empty. The shell script covers the same ground but isn't in the pytest suite, so it won't run in CI.
 
-### 06. How would this run beyond your laptop?
+### 06. How does it run beyond my laptop?
 
-**One-command deployment to Render** — the `render.yml` file defines the service, build command, start command, environment variables, and health check path. Connect your GitHub repo and Render auto-detects the configuration. Free tier included.
+`render.yml` is infrastructure-as-code — connect the repo, Render detects the config, set two secrets, deploy. The Dockerfile produces a slim secure image (~120MB, non-root user) that runs on any container orchestrator.
 
-**Docker production build** — the `Dockerfile` creates a slim, secure image (non-root user, uv package manager, HEALTHCHECK). Ready for any container orchestrator (Kubernetes, ECS, Nomad).
+**To scale horizontally:**
+1. Replace in-memory cache → Redis (shared across instances)
+2. Replace slowapi → Redis-backed rate limiting
+3. Add nginx in front for load balancing
+4. Add a task queue if LLM calls need to be async
 
-**To scale horizontally, you would need:**
-1. Replace in-memory cache with Redis (shared across instances)
-2. Replace slowapi (in-memory rate limiter) with Redis-backed rate limiting
-3. Add a reverse proxy (nginx) for load balancing
-4. Add a database for persistence (if needed)
-5. Set up a task queue for async LLM processing (optional)
+### 07. What I'd do differently
 
-### 07. What would you do differently next time?
+These aren't regrets — they're the gap between building something and shipping something.
 
-| Lesson | What I'd Change |
+| | |
 |---|---|
-| **Auth should come earlier** | The first deploy needs authentication. I'd add JWT or API key auth before Docker, not after. Currently there is no auth layer. |
-| **Async from the start** | Synchronous `invoke()` blocks the event loop. I'd use `ainvoke()` and `async` throughout from day one — retrofitting async is harder than building with it. |
-| **Redis from the start** | In-memory cache is fine for dev, but swapping it in later requires touching the deployment config, docker-compose, and tests. A single Redis container in `docker-compose.yml` from the beginning would have been trivial. |
-| **Integration tests before deployment** | `test_api.py` is still empty. I would write integration tests that spin up the app and hit the endpoints before writing the Dockerfile. |
-| **Separate the agent from the API** | The LangGraph agent is hardcoded into the FastAPI lifespan. An independent agent microservice that the API calls via gRPC or HTTP would be more scalable and testable. |
+| **Auth first** | I'd add API key auth before writing the Dockerfile. There's no auth layer right now — that's the first thing I'd add. |
+| **Async from day one** | `invoke()` blocks the event loop. Retrofitting `ainvoke()` throughout is harder than starting with it. I'd build async from the first commit. |
+| **Redis from day one** | Swapping in-memory cache for Redis later touches the deployment config, docker-compose, and tests. A single Redis container in docker-compose from the start would have cost nothing. |
+| **Formalise the integration tests** | `Production-test-commands.sh` covers 15 live API scenarios. I'd convert these to pytest using FastAPI's `TestClient` so they run in CI without needing a live server. |
+| **Separate the agent** | The LangGraph agent boots inside the FastAPI process. At scale I'd extract it into its own service — the API calls it over HTTP, and I can scale agent instances independently. |
 
 ## Architecture
 
@@ -314,12 +316,7 @@ docker compose up --build
 
 GitHub → Render → Connect Repository → Set `OPENAI_API_KEY` → Deploy
 
-### Environment
 
-| Variable | Purpose |
-|---|---|
-| `APP_ENV=development` | Verbose logging, relaxed limits |
-| `APP_ENV=production` | Production logging and rate limits |
 
 ## Roadmap
 
