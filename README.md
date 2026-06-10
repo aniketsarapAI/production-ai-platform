@@ -15,6 +15,7 @@ Making an LLM call is the easy part. Anyone can call OpenAI from a notebook. Thi
 - [Configuration](#configuration)
 - [Project Structure](#project-structure)
 - [Testing](#testing)
+- [Load Testing](#load-testing)
 - [Quick Start](#quick-start)
 - [Roadmap](#roadmap)
 
@@ -66,6 +67,7 @@ Production AI Platform is a deployment-ready LLM API demonstrating:
 - **LangGraph Agent** — state machine with three nodes: primary model, fallback model, and graceful error handler. Routes dynamically based on success or failure.
 - **Retry with Fallback** — if the primary model fails, the agent automatically retries with a fallback model. If that also fails, a graceful error message is returned instead of server error or broken response.
 - **Multi-Provider** — any OpenAI-compatible API (OpenRouter, OpenAI, Anthropic via proxy, local Ollama) by changing one config value.
+- **Async Execution** — end-to-end asynchronous request processing using FastAPI, LangGraph `ainvoke()`, and async LLM calls for concurrent request handling.
 
 ### Security
 - **Prompt Injection Detection** — 10 regex patterns covering "ignore previous instructions", DAN jailbreak, system prompt extraction, and more. New rules can be added easily as new attack techniques emerge.
@@ -286,6 +288,29 @@ Test coverage:
 | API | — | Integration tests (to be added) |
 
 
+## Load Testing
+
+The service was load tested using **Locust** with unique prompts to avoid cache hits and measure real LLM request concurrency.
+
+| Metric | Value |
+|---|---|
+| Concurrent Users | 25 |
+| Requests | 415 |
+| Failures | 0 (0%) |
+| Average Response Time | 2,396 ms |
+| P50 | 2,100 ms |
+| P95 | 4,500 ms |
+| P99 | 6,900 ms |
+| Throughput | 6.97 req/s |
+
+The application uses asynchronous request handling throughout the LLM execution path:
+
+* FastAPI endpoint uses async handlers
+* LangGraph execution uses `graph.ainvoke()`
+* Model calls use `await llm.ainvoke()`
+
+Because network waits are non-blocking, multiple LLM requests can execute concurrently on a single worker while waiting for provider responses.
+
 ## Quick Start
 
 ```bash
@@ -327,7 +352,8 @@ This project is actively developed. Planned improvements:
 - [ ] Redis-backed caching (replaces in-memory)
 - [ ] Prometheus metrics (replaces in-memory counters)
 - [ ] Streaming responses via SSE
-- [ ] Async LLM calls
+- [x] Async LLM calls
+- [x] Load testing and concurrency validation
 
 
 ### Phase 3: Advanced AI Platform
