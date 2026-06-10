@@ -61,10 +61,10 @@ class ProductionAgent:
     def _build_graph(self):
         """Build the LangGraph state machine."""
 
-        def process_message(state: AgentState) -> dict:
+        async def process_message(state: AgentState) -> dict:
             """Try to process the message with the primary model."""
             try:
-                response = self.primary_llm.invoke(state["messages"])
+                response = await self.primary_llm.ainvoke(state["messages"])
                 return {
                     "messages": [response],
                     "error": None,
@@ -77,10 +77,10 @@ class ProductionAgent:
                     "model_used": "",
                 }
 
-        def try_fallback(state: AgentState) -> dict:
+        async def try_fallback(state: AgentState) -> dict:
             """Fallback to secondary model."""
             try:
-                response = self.fallback_llm.invoke(state["messages"])
+                response = await self.fallback_llm.ainvoke(state["messages"])
                 return {
                     "messages": [response],
                     "error": None,
@@ -92,7 +92,7 @@ class ProductionAgent:
                     "model_used": "",
                 }
 
-        def handle_error(state: AgentState) -> dict:
+        async def handle_error(state: AgentState) -> dict:
             """Return a graceful error message."""
             return {
                 "messages": [
@@ -149,6 +149,25 @@ class ProductionAgent:
         Returns: {"response": str, "model_used": str, "error": str | None}
         """
         result = self.graph.invoke({
+            "messages": [HumanMessage(content=message)],
+            "error": None,
+            "retry_count": 0,
+            "model_used": "",
+        })
+
+        return {
+            "response": result["messages"][-1].content,
+            "model_used": result.get("model_used", "unknown"),
+            "error": result.get("error"),
+        }
+
+    @traceable(name="production_agent_ainvoke")
+    async def ainvoke(self, message: str) -> dict:
+        """
+        Async invoke the agent with a user message.
+        Returns: {"response": str, "model_used": str, "error": str | None}
+        """
+        result = await self.graph.ainvoke({
             "messages": [HumanMessage(content=message)],
             "error": None,
             "retry_count": 0,
