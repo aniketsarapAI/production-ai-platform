@@ -64,11 +64,11 @@ Production AI Platform is a deployment-ready LLM API demonstrating:
 
 ### Core AI
 - **LangGraph Agent** — state machine with three nodes: primary model, fallback model, and graceful error handler. Routes dynamically based on success or failure.
-- **Retry with Fallback** — if the primary model fails, the agent automatically retries with a fallback model. If that also fails, a graceful error message is returned instead of a 500.
+- **Retry with Fallback** — if the primary model fails, the agent automatically retries with a fallback model. If that also fails, a graceful error message is returned instead of server error or broken response.
 - **Multi-Provider** — any OpenAI-compatible API (OpenRouter, OpenAI, Anthropic via proxy, local Ollama) by changing one config value.
 
 ### Security
-- **Prompt Injection Detection** — 10 regex patterns covering "ignore previous instructions", DAN jailbreak, system prompt extraction, and more.
+- **Prompt Injection Detection** — 10 regex patterns covering "ignore previous instructions", DAN jailbreak, system prompt extraction, and more.New rules can be added easily as new attack techniques emerge.
 - **PII Detection & Masking** — email, phone, SSN, and credit card detection on both input (before LLM) and output (before client).
 - **Output Validation** — PII leakage prevention and harmful content blocking in LLM responses.
 - **Rate Limiting** — per-IP rate limiting via slowapi with configurable limits.
