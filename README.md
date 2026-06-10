@@ -324,11 +324,12 @@ This project is actively developed. Planned improvements:
 
 ### Phase 2: Production Hardening
 - [ ] JWT authentication and API key management
+- [ ] LLM-based guard for semantic injection detection 
 - [ ] Redis-backed caching (replaces in-memory)
 - [ ] Prometheus metrics (replaces in-memory counters)
 - [ ] Streaming responses via SSE
 - [ ] Async LLM calls
-- [ ] GitHub Actions CI/CD
+
 
 ### Phase 3: Advanced AI Platform
 - [ ] Document ingestion and RAG pipeline (vector store + retrieval)
