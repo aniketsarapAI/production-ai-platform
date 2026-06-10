@@ -1,6 +1,6 @@
 # Production AI Platform
 
-A production-oriented AI platform demonstrating deployment, observability, security, caching, rate limiting, and operational best practices for LLM applications.
+Making an LLM call is the easy part. Anyone can call OpenAI from a notebook. This project is about everything that happens around that call - the security layer before it, the observability around it, the caching that avoids it, and the fallback when it fails.
 
 <p align="center">
   <img src="assets/hero.svg" alt="Production AI Platform System Blueprint" width="100%" />
