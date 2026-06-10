@@ -68,7 +68,7 @@ Production AI Platform is a deployment-ready LLM API demonstrating:
 - **Multi-Provider** — any OpenAI-compatible API (OpenRouter, OpenAI, Anthropic via proxy, local Ollama) by changing one config value.
 
 ### Security
-- **Prompt Injection Detection** — 10 regex patterns covering "ignore previous instructions", DAN jailbreak, system prompt extraction, and more.New rules can be added easily as new attack techniques emerge.
+- **Prompt Injection Detection** — 10 regex patterns covering "ignore previous instructions", DAN jailbreak, system prompt extraction, and more. New rules can be added easily as new attack techniques emerge.
 - **PII Detection & Masking** — email, phone, SSN, and credit card detection on both input (before LLM) and output (before client).
 - **Output Validation** — PII leakage prevention and harmful content blocking in LLM responses.
 - **Rate Limiting** — per-IP rate limiting via slowapi with configurable limits.
@@ -164,7 +164,6 @@ Three levels, none requiring an API key:
 
 These aren't regrets — they're the gap between building something and shipping something.
 
-| | |
 |---|---|
 | **Auth first** | I'd add API key auth before writing the Dockerfile. There's no auth layer right now — that's the first thing I'd add. |
 | **Async from day one** | `invoke()` blocks the event loop. Retrofitting `ainvoke()` throughout is harder than starting with it. I'd build async from the first commit. |
