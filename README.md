@@ -65,6 +65,13 @@ Production AI Platform is a deployment-ready LLM API demonstrating:
 - [Roadmap](#roadmap)
 
 ## Features
+## Features
+
+The **Platform Kernel** orchestrates all system logic, safely exposing LLM capabilities through a secured, observably middleware mesh.
+
+<p align="center">
+  <img src="assets/features.svg" alt="Platform Capability Mesh Diagram" width="100%" />
+</p>
 
 ### Core AI
 - **LangGraph Agent** — state machine with three nodes: primary model, fallback model, and graceful error handler. Routes dynamically based on success or failure.

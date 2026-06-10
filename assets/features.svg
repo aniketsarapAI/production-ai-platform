@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 660" width="100%" height="100%">
+  <defs>
+    <linearGradient id="hubGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <marker id="hubArrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#9CA3AF"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="660" fill="#F9FAFB" rx="16"/>
+
+  <g stroke="#D1D5DB" stroke-width="1.5" stroke-dasharray="4,4">
+    <line x1="500" y1="330" x2="220" y2="100"/>
+    <line x1="500" y1="330" x2="500" y2="100"/>
+    <line x1="500" y1="330" x2="780" y2="100"/>
+    <line x1="500" y1="330" x2="220" y2="560"/>
+    <line x1="500" y1="330" x2="500" y2="560"/>
+    <line x1="500" y1="330" x2="780" y2="560"/>
+  </g>
+
+  <g transform="translate(380, 260)">
+    <rect width="240" height="140" rx="20" fill="url(#hubGrad)" stroke="#1E3A8A" stroke-width="4"/>
+    <text x="120" y="55" font-family="Segoe UI, sans-serif" font-weight="800" font-size="28" fill="#FFFFFF" text-anchor="middle" letter-spacing="-1">PRODUCTION</text>
+    <text x="120" y="85" font-family="Segoe UI, sans-serif" font-weight="800" font-size="28" fill="#FFFFFF" text-anchor="middle" letter-spacing="-1">AI PLATFORM</text>
+    <text x="120" y="112" font-family="Fira Code, monospace" font-size="12" fill="#DBEAFE" text-anchor="middle">v1.0.0 Kernel</text>
+  </g>
+
+  <g transform="translate(100, 30)">
+    <rect width="240" height="140" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+    <g transform="translate(15,15)">
+      <rect width="24" height="24" rx="5" fill="none" stroke="#2563EB" stroke-width="2"/>
+      <path d="M 8 12 L 12 8 L 16 12 L 12 16 Z" fill="none" stroke="#2563EB" stroke-width="2"/>
+    </g>
+    <text x="50" y="32" font-family="Segoe UI, sans-serif" font-weight="700" font-size="15" fill="#1F2937">CORE AI ENGINE</text>
+    <g transform="translate(15, 60)" font-family="Segoe UI, sans-serif" font-size="12" fill="#4B5563">
+      <text x="0" y="0">• LangGraph State Machine (3 Nodes)</text>
+      <text x="0" y="18">• Retry with Fallback Recovery</text>
+      <text x="0" y="36">• Multi-Provider Gateway (OpenRouter)</text>
+    </g>
+  </g>
+
+  <g transform="translate(380, 30)">
+    <rect width="240" height="140" rx="12" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+    <g transform="translate(15,15)">
+      <path d="M 12 6 L 18 9 L 18 13 C 18 17 15 19 12 20 C 9 19 6 17 6 13 L 6 9 Z" fill="none" stroke="#B45309" stroke-width="2"/>
+    </g>
+    <text x="50" y="32" font-family="Segoe UI, sans-serif" font-weight="700" font-size="15" fill="#1F2937">SECURITY GUARDRAILS</text>
+    <g transform="translate(15, 60)" font-family="Segoe UI, sans-serif" font-size="12" fill="#4B5563">
+      <text x="0" y="0">• Prompt Injection Filters (Regex)</text>
+      <text x="0" y="18">• PII Masking (Input/Output)</text>
+      <text x="0" y="36">• Per-IP Rate Limiting (SlowAPI)</text>
+    </g>
+  </g>
+
+  <g transform="translate(660, 30)">
+    <rect width="240" height="140" rx="12" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
+    <g transform="translate(15,15)">
+      <path d="M 6 10 M 18 10 M 6 14 M 18 14 M 6 18 M 18 18" fill="none" stroke="#6D28D9" stroke-width="2"/>
+      <line x1="8" y1="10" x2="16" y2="10" stroke="#6D28D9" stroke-width="2"/>
+      <line x1="8" y1="14" x2="16" y2="14" stroke="#6D28D9" stroke-width="2"/>
+      <line x1="8" y1="18" x2="16" y2="18" stroke="#6D28D9" stroke-width="2"/>
+    </g>
+    <text x="50" y="32" font-family="Segoe UI, sans-serif" font-weight="700" font-size="15" fill="#1F2937">CACHING LAYER</text>
+    <g transform="translate(15, 60)" font-family="Segoe UI, sans-serif" font-size="12" fill="#4B5563">
+      <text x="0" y="0">• SHA-256 Exact-Match Response Cache</text>
+      <text x="0" y="18">• TTL-based Expiration</text>
+      <text x="0" y="36">• Cache Hit/Miss API Stats</text>
+    </g>
+  </g>
+
+  <g transform="translate(100, 490)">
+    <rect width="240" height="140" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+    <g transform="translate(15,15)">
+      <path d="M 6 18 L 10 9 L 14 13 L 18 6" fill="none" stroke="#059669" stroke-width="2"/>
+    </g>
+    <text x="50" y="32" font-family="Segoe UI, sans-serif" font-weight="700" font-size="15" fill="#1F2937">OBSERVABILITY</text>
+    <g transform="translate(15, 60)" font-family="Segoe UI, sans-serif" font-size="12" fill="#4B5563">
+      <text x="0" y="0">• End-to-End LangSmith Tracing</text>
+      <text x="0" y="18">• Structured JSON Logs (Timestamps)</text>
+      <text x="0" y="36">• Metrics (Latency, Error Rate)</text>
+    </g>
+  </g>
+
+  <g transform="translate(380, 490)">
+    <rect width="240" height="140" rx="12" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+    <g transform="translate(15,15)">
+      <rect x="7" y="7" width="10" height="10" fill="none" stroke="#475569" stroke-width="2"/>
+    </g>
+    <text x="50" y="32" font-family="Segoe UI, sans-serif" font-weight="700" font-size="15" fill="#1F2937">INFRASTRUCTURE</text>
+    <g transform="translate(15, 60)" font-family="Segoe UI, sans-serif" font-size="12" fill="#4B5563">
+      <text x="0" y="0">• Docker Slim Image (uv manager)</text>
+      <text x="0" y="18">• Non-root User Security</text>
+      <text x="0" y="36">• Render Cloud Manifest (render.yml)</text>
+    </g>
+  </g>
+
+  <g transform="translate(660, 490)">
+    <rect width="240" height="140" rx="12" fill="#FDF2F8" stroke="#DB2777" stroke-width="2"/>
+    <g transform="translate(15,15)">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="#9D174D" stroke-width="2"/>
+      <path d="M 12 8 L 12 16 L 16 12 Z" fill="#9D174D"/>
+    </g>
+    <text x="50" y="32" font-family="Segoe UI, sans-serif" font-weight="700" font-size="15" fill="#1F2937">DEMO &amp; INTEGRATION</text>
+    <g transform="translate(15, 60)" font-family="Segoe UI, sans-serif" font-size="12" fill="#4B5563">
+      <text x="0" y="0">• Configurable CORS Support</text>
+      <text x="0" y="18">• Automatic Swagger Documentation</text>
+      <text x="0" y="36">• Deep Component Health Checks</text>
+    </g>
+  </g>
+</svg>
