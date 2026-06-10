@@ -164,6 +164,10 @@ Three levels, none requiring an API key:
 3. Add nginx in front for load balancing
 4. Add a task queue for long-running workflows, background jobs, or batch processing
 
+### 07. What I'd do differently
+
+These aren't regrets — they're the gap between building something and shipping something.
+
 | Item | Notes |
 |------|-------|
 | **Auth first** | I'd add API key auth before writing the Dockerfile. There's no auth layer right now — that's the first thing I'd add. |
